@@ -1,11 +1,15 @@
 #!/bin/bash
 
 function pulumiPreview {
-  outputStdOut=$(mktemp)
-  outputStdErr=$(mktemp)
+  outputStdOut="$1"
+  outputStdErr="$2"
   command="pulumi preview -s ${PULUMI_STACK} --diff --expect-no-changes --color=never --suppress-outputs=true --suppress-permalink=true"
 
-  if bash -c "${command}" > >(tee -a ${outputStdOut}) 2> >(tee -a ${outputStdErr} >&2); then
+  # Redirect stdout to a file and stdout with tee
+  # Redirect stderr to a file and stderr with tee
+  # Because we use --expect-no-changes then no changes would have an exit code
+  # of 0 and let us exit immediately
+  if bash -c "${command}" > >(tee ${outputStdOut}) 2> >(tee ${outputStdErr} >&2); then
     echo "Exiting because there are no changes"
     exit 0
   fi
@@ -16,7 +20,7 @@ function pulumiPreview {
     if [ -z $GITHUB_TOKEN ]; then
       echo "ERROR: GITHUB_TOKEN is not set."
     else
-      COMMENT="#### \`preview\`
+      COMMENT="#### \`pulumi preview\`
 <details>
   <summary>Details</summary>
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ]; then
-  echo 'Usage: ./main.sh $command $working_directory'
+if [ "$#" -ne 1 ]; then
+  echo 'Usage: ./main.sh $command'
   exit 1
 fi
 
@@ -11,6 +11,10 @@ export PULUMI_SKIP_CONFIRMATIONS=true
 export PULUMI_SKIP_UPDATE_CHECK=true
 export PULUMI_SELF_MANAGED_STATE_LOCKING=1
 
+# Have a place to store output
+outputStdOut=$(mktemp)
+outputStdErr=$(mktemp)
+
 workingDir="$2"
 function main {
   command="$1"
@@ -19,7 +23,7 @@ function main {
 
   case "${command}" in
     preview)
-      pulumiPreview
+      pulumiPreview "$2" "$3"
       ;;
     *)
       echo "Error: Unrecognized command ${command}"
@@ -28,4 +32,18 @@ function main {
   esac
 }
 
-main "$1"
+
+if main "$1" "${outputStdOut}" "${outputStdErr}"; then
+  exit 0
+else
+  ATTEMPTS=0
+  while grep 'error: the stack is currently locked' ${outputStdErr} > /dev/null;
+  do
+    echo "Stack is currently locked"
+    sleep 30
+    ATTEMPTS=$(( ATTEMPTS + 1 ))
+
+    main "$1" "${outputStdOut}" "${outputStdErr}"
+  done
+  [ $ATTEMPTS -lt 10 ]
+fi
