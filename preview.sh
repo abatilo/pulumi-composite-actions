@@ -29,7 +29,7 @@ function pulumiPreview {
 <details>
   <summary>Details</summary>
 
-  \`\`\`
+  \`\`\`diff
   $(cat ${outputStdOut} | tail -c 65000)
   \`\`\`
 </details>"
