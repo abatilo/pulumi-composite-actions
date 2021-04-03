@@ -1,5 +1,8 @@
 name: "pulumi composite actions"
 description: "A composite action wrapper around pulumi"
+branding:
+  icon: upload-cloud
+  color: purple
 inputs:
   command:
     description: "The pulumi command to run"
