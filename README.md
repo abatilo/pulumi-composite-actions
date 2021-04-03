@@ -7,6 +7,17 @@ container needs to be built before the workflow can run. If you use something
 like a TypeScript action or a composite action, the action itself runs
 instantly.
 
+Then you might ask, but Aaron, they re-did their actions to use the Pulumi
+automation API! Now the actions are entirely in TypeScript. Isn't that fast
+enough?
+
+Yeah, yeah, you're right. But then I found another reason why I don't like
+their action. Their action will ALWAYS leave a comment on your PR after every
+single run, even when there isn't an actual change to be applied. Even if you
+don't have any Pulumi related changes, you'll get a new comment on your PR for
+every single push you make to a PR. This action will only comment if there are
+changes detected.
+
 **This does assume that pulumi is already installed by the time this action is
 called**
 
