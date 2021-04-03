@@ -15,14 +15,10 @@ function main {
   command="$1"
   scriptDir=$(dirname ${0})
   source ${scriptDir}/preview.sh
-  source ${scriptDir}/up.sh
 
   case "${command}" in
     preview)
       pulumiPreview
-      ;;
-    up)
-      pulumiUp
       ;;
     *)
       echo "Error: Unrecognized command ${command}"
