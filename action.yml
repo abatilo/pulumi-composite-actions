@@ -1,0 +1,29 @@
+name: "pulumi composite actions"
+description: "A composite action wrapper around pulumi"
+inputs:
+  command:
+    description: "The pulumi command to run"
+    required: true
+  passphrase:
+    description: "The passphrase to set for the project"
+    required: true
+    default: ""
+  comment:
+    description: "Determines whether or not this command will comment to the PR discussion"
+    required: false
+    default: "true"
+  working_directory:
+    description: "The directory to run all the commands in"
+    required: false
+    default: "."
+runs:
+  using: "composite"
+  steps:
+    - name: pulumi
+      env:
+        PULUMI_CONFIG_PASSPHRASE: ${{ inputs.passphrase }}
+        COMMENT_ON_PR: ${{ inputs.comment }}
+      shell: bash
+      id: main
+      working-directory: ${{ inputs.working_directory }}
+      run: ${{ github.action_path }}/main.sh "${{ inputs.command }}" "${{ inputs.working_directory }}"
