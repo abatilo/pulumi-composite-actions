@@ -17,12 +17,13 @@ function pulumiPreview {
       echo "ERROR: GITHUB_TOKEN is not set."
     else
       COMMENT="#### \`preview\`
-      <details>
-      <summary>Details</summary>
-      \`\`\`
-      $(cat ${outputStdOut} | tail -c 65000)
-      \`\`\`
-      </details>"
+<details>
+  <summary>Details</summary>
+
+  \`\`\`
+  $(cat ${outputStdOut} | tail -c 65000)
+  \`\`\`
+</details>"
       echo "$COMMENT" > comment.txt
       echo '{}' | jq --rawfile body comment.txt '.body = $body' > payload.json
       echo "Commenting on PR ${commentsURL}"
