@@ -6,6 +6,7 @@ function pulumiPreview {
   command="pulumi preview -s ${PULUMI_STACK} --diff --expect-no-changes --color=never --suppress-outputs=true --suppress-permalink=true"
 
   if bash -c "${command}" > >(tee -a ${outputStdOut}) 2> >(tee -a ${outputStdErr} >&2); then
+    echo "Exiting because there are no changes"
     exit 0
   fi
 
@@ -19,7 +20,7 @@ function pulumiPreview {
       <details>
       <summary>Details</summary>
       \`\`\`
-      $(cat ${outputStdOut} | tail -c 65000)
+      "$(cat ${outputStdOut} | tail -c 65000)"
       \`\`\`
       </details>"
       echo "$COMMENT" > comment.txt
@@ -29,7 +30,9 @@ function pulumiPreview {
     fi
   fi
 
+  # Pulumi doesn't have Terraform's -detailed-exitcode option so we have to improvise
   if grep 'error: no changes were expected but changes were proposed' ${outputStdErr}; then
+    echo "Since this isn't an actual error, exiting with status code 0"
     exit 0
   fi
   exit 1
