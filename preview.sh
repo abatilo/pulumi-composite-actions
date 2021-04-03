@@ -38,7 +38,11 @@ function pulumiPreview {
   # Pulumi doesn't have Terraform's -detailed-exitcode option so we have to improvise
   if grep 'error: no changes were expected but changes were proposed' ${outputStdErr}; then
     echo "Since this isn't an actual error, exiting with status code 0"
+    exit 0
+  fi
+  if grep 'error: the stack is currently locked' ${outputStdErr}; then
+    # Don't exit shell, return 0 and let main.sh retry loop kick in
     return 0
   fi
-  return 1
+  exit 1
 }

@@ -33,17 +33,20 @@ function main {
 }
 
 
-if main "$1" "${outputStdOut}" "${outputStdErr}"; then
-  exit 0
-else
-  ATTEMPTS=0
-  while grep 'error: the stack is currently locked' ${outputStdErr} > /dev/null;
-  do
-    echo "Stack is currently locked"
-    sleep 30
-    ATTEMPTS=$(( ATTEMPTS + 1 ))
+main "$1" "${outputStdOut}" "${outputStdErr}"
 
-    main "$1" "${outputStdOut}" "${outputStdErr}"
-  done
-  [ $ATTEMPTS -lt 10 ]
-fi
+# Perform retries in the case of a stack lock
+ATTEMPTS=0
+while grep 'error: the stack is currently locked' ${outputStdErr};
+do
+  # Retry every 30 seconds up to 20 times, for a max of 10 minutes
+  if [[ "${ATTEMPTS}" -eq 20 ]]; then
+    echo "Could not acquire lock after ${ATTEMPTS} tries. Exiting..."
+    ecit 1
+  fi
+
+  echo "Stack is currently locked"
+  sleep 30
+  ATTEMPTS=$(( ATTEMPTS + 1 ))
+  main "$1" "${outputStdOut}" "${outputStdErr}"
+done
