@@ -3,7 +3,7 @@
 function pulumiUp {
   outputStdOut=$(mktemp)
   outputStdErr=$(mktemp)
-  command="pulumi up --color never --suppress-outputs --suppress-permalink ${*}"
+  command="pulumi up -s ${PULUMI_STACK} --expect-no-changes --color never --suppress-outputs --suppress-permalink ${*}"
 
   if bash -c "${command}" > >(tee -a ${outputStdOut}) 2> >(tee -a ${outputStdErr} >&2); then
     exit 0
