@@ -4,6 +4,9 @@ inputs:
   command:
     description: "The pulumi command to run"
     required: true
+  stack:
+    description: "The pulumi stack to use"
+    required: true
   passphrase:
     description: "The passphrase to set for the project"
     required: true
@@ -21,8 +24,8 @@ runs:
   steps:
     - name: pulumi
       env:
+        PULUMI_STACK: ${{ inputs.stack }}
         PULUMI_CONFIG_PASSPHRASE: ${{ inputs.passphrase }}
-        COMMENT_ON_PR: ${{ inputs.comment }}
       shell: bash
       id: main
       working-directory: ${{ inputs.working_directory }}

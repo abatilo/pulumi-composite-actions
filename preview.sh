@@ -3,7 +3,7 @@
 function pulumiPreview {
   outputStdOut=$(mktemp)
   outputStdErr=$(mktemp)
-  command="pulumi preview --color never --suppress-outputs --suppress-permalink ${*}"
+  command="pulumi preview -s ${PULUMI_STACK} --color never --suppress-outputs --suppress-permalink ${*}"
 
   if bash -c "${command}" > >(tee -a ${outputStdOut}) 2> >(tee -a ${outputStdErr} >&2); then
     exit 0
