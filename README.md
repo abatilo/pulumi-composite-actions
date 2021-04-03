@@ -18,8 +18,46 @@ use
 
 ## Inputs
 
-TODO
+```yaml
+inputs:
+  command:
+    description: "The pulumi command to run"
+    required: true
+  stack:
+    description: "The pulumi stack to use"
+    required: true
+  passphrase:
+    description: "The passphrase to set for the project"
+    required: false
+    default: ""
+  working_directory:
+    description: "The directory to run all the commands in"
+    required: false
+    default: "."
+```
 
 ## Examples
 
-TODO
+### preview
+
+```yaml
+- uses: abatilo/pulumi-composite-actions@v1.0.0
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    passphrase: ${{ secrets.PULUMI_CONFIG_PASSPHRASE }}
+    command: preview
+    stack: stack-name
+```
+
+### up
+
+```yaml
+- uses: abatilo/pulumi-composite-actions@v1.0.0
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    passphrase: ${{ secrets.PULUMI_CONFIG_PASSPHRASE }}
+    command: up
+    stack: stack-name
+```
