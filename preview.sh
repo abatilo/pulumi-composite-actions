@@ -20,7 +20,7 @@ function pulumiPreview {
       <details>
       <summary>Details</summary>
       \`\`\`
-      "$(cat ${outputStdOut} | tail -c 65000)"
+      "$(cat ${outputStdOut}"
       \`\`\`
       </details>"
       echo "$COMMENT" > comment.txt
