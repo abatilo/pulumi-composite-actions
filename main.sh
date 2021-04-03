@@ -9,6 +9,7 @@ fi
 # See: https://www.pulumi.com/docs/reference/cli/environment-variables/
 export PULUMI_SKIP_CONFIRMATIONS=true
 export PULUMI_SKIP_UPDATE_CHECK=true
+export PULUMI_SELF_MANAGED_STATE_LOCKING=1
 
 workingDir="$2"
 function main {
