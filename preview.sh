@@ -25,7 +25,7 @@ function pulumiPreview {
     if [ -z $GITHUB_TOKEN ]; then
       echo "ERROR: GITHUB_TOKEN is not set."
     else
-      COMMENT="#### \`pulumi preview\`
+      COMMENT="#### \`pulumi preview\` for \`${WORKING_DIR}\`
 <details>
   <summary>Details</summary>
 

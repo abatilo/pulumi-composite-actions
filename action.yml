@@ -25,6 +25,7 @@ runs:
       env:
         PULUMI_STACK: ${{ inputs.stack }}
         PULUMI_CONFIG_PASSPHRASE: ${{ inputs.passphrase }}
+        WORKING_DIR: ${{ inputs.working_directory }}
       shell: bash
       id: main
       working-directory: ${{ inputs.working_directory }}
