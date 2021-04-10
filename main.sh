@@ -15,7 +15,6 @@ export PULUMI_SELF_MANAGED_STATE_LOCKING=1
 outputStdOut=$(mktemp)
 outputStdErr=$(mktemp)
 
-workingDir="$2"
 function main {
   command="$1"
   scriptDir=$(dirname ${0})
