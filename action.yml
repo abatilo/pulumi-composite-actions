@@ -21,6 +21,14 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: asdf
+      shell: bash
+      id: asdf
+      working-directory: ${{ inputs.working_directory }}
+      run: |
+        pwd
+        asdf current
+        ls -lah
     - name: pulumi
       env:
         PULUMI_STACK: ${{ inputs.stack }}
